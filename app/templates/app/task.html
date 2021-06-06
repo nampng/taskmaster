@@ -1,0 +1,47 @@
+{% extends 'app/base.html '%}
+{% load crispy_forms_tags %}
+
+{% block title %}Taskmaster - Tasks{% endblock %}
+
+{% block content %}
+<div class="container py-3">
+    <a href="/" class="btn btn-primary">Back To Home</a>
+</div>
+<div class="container py-3">
+    <h3>Make a task:</h3>
+    <form action="" method="POST" class="form-group">
+        {% csrf_token %}
+        {{task_form|crispy}}
+        <br>
+        <button type="submit" name="submit_task" value="submit_task" class="btn btn-success">Add Task</button>
+    </form>
+</div>
+<div class="container py-3">
+    <h1>Tasks:</h1>
+    {% if task_list %}
+        <form action="" method="POST">
+            {% csrf_token %}
+            {% for task in task_list %}
+            <div class="input-group mb-3">
+                {% if task.complete == False %}
+                <div class="input-group-text">
+                    <input type="checkbox" name="c{{task.id}}" value="complete">
+                </div>
+                {% else %}
+                <div class="input-group-text">
+                    <input type="checkbox" name="c{{task.id}}" value="complete" checked>
+                </div>
+                {% endif %}
+                <input type="text" name="task_text" value="{{task.text}}" class="form-control" readonly>
+                <input type="date-local" name="task_start" value="{{task.start_date}}" class="form-control" readonly>
+                <input type="date-local" name="task_deadline" value="{{task.deadline_date}}" class="form-control" readonly>
+                <button name="delete_task" value="d{{task.id}}" class="btn btn-danger">Delete</button>
+            </div>
+            {% endfor %}
+            <button type="submit" name="save_task" value="save_task" class="btn btn-success">Save Tasks</button>
+        </form>
+    {% else %}
+        <h3>No tasks...</h3>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,46 @@
+{% extends 'app/base.html '%}
+{% load crispy_forms_tags %}
+
+{% block title %}Taskmaster - Routines{% endblock %}
+
+{% block content %}
+<div class="container py-3">
+    <a href="/" class="btn btn-primary">Back To Home</a>
+</div>
+<div class="container">
+    <h3>Make a routine:</h3>
+    <form action="" method="POST" class="form-group">
+        {% csrf_token %}
+        {{routine_form|crispy}}
+        <br>
+        <button type="submit" name="submit_routine" value="submit_routine" class="btn btn-success">Add Routine</button>
+    </form>
+</div>
+<div class="container py-3">
+    <h1>Routines:</h1>
+    {% if routine_list %}
+        <form method="POST" action="">
+            {% csrf_token %}
+            {% for routine in routine_list %}
+            <div class="input-group mb-3">
+                {% if routine.complete == False %}
+                <div class="input-group-text">
+                    <input type="checkbox" name="c{{routine.id}}" value="complete">
+                </div>
+                {% else %}
+                <div class="input-group-text">
+                    <input type="checkbox" name="c{{routine.id}}" value="complete" checked>
+                </div>
+                {% endif %}
+                <input type="text" name="routine_text" value="{{routine.text}}" class="form-control" readonly>
+                <input type="text" name="routine_time" value="{{routine.time}}" class="form-control" readonly>
+                <button name="delete_routine" value="d{{routine.id}}" class="btn btn-danger">Delete</button>
+            </div>
+            {% endfor %}
+            <button name="save_routine" value="save_routine" class="btn btn-success">Save</button>
+        </form>
+    {% else %}
+        <h3>No routines...</h3>
+    {% endif %}
+</div>
+{% endblock %}

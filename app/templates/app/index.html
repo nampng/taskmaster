@@ -1,0 +1,38 @@
+{% extends 'app/base.html'%}
+{% block content %}
+<div class="container">
+    <h3>Next Routine:</h3>
+    <br>
+    {% if next_routine %}
+    <form method="POST" class="input-group">
+        {% csrf_token %}
+        <input type="text" name="routine_text" value="{{next_routine.text}}" class="form-control" readonly>
+        <input type="text" name="routine_time" value="@ {{next_routine.time}}" class="form-control" readonly>
+        <button type="submit" value="done" name="done_routine" class="btn btn-success">Done</button>
+    </form>
+    {% else %}
+    <h5 class="col-9">No routines to do...</h3>
+    {% endif %}
+    <br>
+    <a href="routine/" class="btn btn-primary">To Routines</a>
+</div>
+
+<br>
+
+<div class="container">
+    <h3>Next Tasks:</h3>
+    <br>
+    {% if next_task %}
+    <form method="POST" class="input-group">
+        {% csrf_token %}
+        <input type="text" name="task_text" value="{{next_task.text}}" class="form-control" readonly>
+        <input type="text" name="task_deadline" value="Due: {{next_task.deadline_date}}" class="form-control" readonly>
+        <button type="submit" value="done" name="done_task" class="btn btn-success">Done</button>
+    </form>
+    {% else %}
+    <h5 class="col-9">No tasks to do...</h5>
+    {% endif %}
+    <br>
+    <a href="task/" class="btn btn-primary">To Tasks</a>
+</div>
+{% endblock %}
